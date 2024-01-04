@@ -48,45 +48,45 @@
       <ul class="d-flex align-items-center">
         <!-- Authentication Links -->
         @guest
-          @if (Route::has('login'))
-          <li class="nav-item dropdown pe-3">
-            <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
-          </li>
-          @endif
+        @if (Route::has('login'))
+        <li class="nav-item dropdown pe-3">
+          <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
+        </li>
+        @endif
 
-          @if (Route::has('register'))
-          <li class="nav-item dropdown pe-3">
-            <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
-          </li>
-          @endif
+        @if (Route::has('register'))
+        <li class="nav-item dropdown pe-3">
+          <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
+        </li>
+        @endif
         @else
-          <li class="nav-item dropdown pe-3">
-            <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
-              <img src="{{ asset('template/img/profile-img.jpg') }}" alt="Profile" class="rounded-circle">
-              <span class="d-none d-md-block dropdown-toggle ps-2">{{ Auth::user()->name }}</span>
-            </a><!-- End Profile Iamge Icon -->
+        <li class="nav-item dropdown pe-3">
+          <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
+            <img src="{{ asset('template/img/profile-img.jpg') }}" alt="Profile" class="rounded-circle">
+            <span class="d-none d-md-block dropdown-toggle ps-2">{{ Auth::user()->name }}</span>
+          </a><!-- End Profile Iamge Icon -->
 
-            <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
-              <li class="dropdown-header">
-                <h6>{{ Auth::user()->name }}</h6>
-                <span>{{ Auth::user()->role }}</span>
-              </li>
-              <li>
-                <hr class="dropdown-divider">
-              </li>
-              <li>
-                <a class="dropdown-item d-flex align-items-center" href="{{ route('logout') }}" onclick="event.preventDefault();
+          <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
+            <li class="dropdown-header">
+              <h6>{{ Auth::user()->name }}</h6>
+              <span>{{ Auth::user()->role }}</span>
+            </li>
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+            <li>
+              <a class="dropdown-item d-flex align-items-center" href="{{ route('logout') }}" onclick="event.preventDefault();
                                                         document.getElementById('logout-form').submit();">
-                  <i class="bi bi-box-arrow-right"></i>
-                  <span>Sign Out</span>
-                </a>
-                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                  @csrf
-                </form>
-              </li>
+                <i class="bi bi-box-arrow-right"></i>
+                <span>Sign Out</span>
+              </a>
+              <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                @csrf
+              </form>
+            </li>
 
-            </ul><!-- End Profile Dropdown Items -->
-          </li><!-- End Profile Nav -->
+          </ul><!-- End Profile Dropdown Items -->
+        </li><!-- End Profile Nav -->
         @endguest
 
       </ul>
@@ -104,16 +104,23 @@
           <i class="bi bi-grid"></i>
           <span>Home</span>
         </a>
-      </li><!-- End Dashboard Nav -->
+      </li>
 
       <li class="nav-item">
         <a class="nav-link collapsed" href="{{ url('transaksi') }}">
           <i class="bi bi-cash-coin"></i>
           <span>Transaksi</span>
         </a>
-      </li><!-- End Transaksi Nav -->
+      </li>
 
       <li class="nav-item">
+        <a class="nav-link collapsed" href="{{ url('laporan') }}">
+          <i class="bi bi-journal-text"></i>
+          <span>Laporan</span>
+        </a>
+      </li>
+
+      <!-- <li class="nav-item">
         <a class="nav-link collapsed" data-bs-target="#laporan-nav" data-bs-toggle="collapse" href="#">
           <i class="bi bi-journal-text"></i><span>Laporan</span><i class="bi bi-chevron-down ms-auto"></i>
         </a>
@@ -134,16 +141,28 @@
             </a>
           </li>
         </ul>
-      </li><!-- End Laporan Nav -->
+      </li>End Laporan Nav -->
 
       @if ( Auth::user()->role != "Owner" )
       @else
       <li class="nav-item">
-        <a class="nav-link collapsed" href="{{ url('setting') }}">
+        <a class="nav-link">
           <i class="bi bi-gear"></i>
-          <span>Account Settings</span>
+          <span>Setting</span>
         </a>
-      </li><!-- End Account Setting -->
+        <ul class="nav-content">
+          <li>
+            <a href="{{ url('setting') }}">
+              <i class="bi bi-circle"></i><span>Account</span>
+            </a>
+          </li>
+          <li>
+            <a href="{{ url('jenis') }}">
+              <i class="bi bi-circle"></i><span>Jenis Transaksi</span>
+            </a>
+          </li>
+        </ul>
+      </li>
       @endif
 
     </ul>
@@ -157,7 +176,7 @@
   <!-- ======= Footer ======= -->
   <footer id="footer" class="footer">
     <div class="copyright">
-      &copy; Copyright <strong><span>HMDN</span></strong>. All Rights Reserved
+      &copy; Copyright <strong><span>AEY Creative</span></strong>. All Rights Reserved
     </div>
   </footer><!-- End Footer -->
 
@@ -180,4 +199,5 @@
 
   @yield('js')
 </body>
+
 </html>

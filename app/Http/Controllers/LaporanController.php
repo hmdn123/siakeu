@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Exports\ExportLaporan;
+use App\Models\Jenis;
 use App\Models\Transaksi;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
@@ -10,6 +11,29 @@ use Maatwebsite\Excel\Facades\Excel;
 
 class LaporanController extends Controller
 {
+    public function index(): View
+    {
+        $transaksi = Transaksi::select("*")
+            ->orderBy('created_at')
+            ->get();
+        $total_pemasukan = Transaksi::where('jenis', 'Debit')
+            ->sum('nominal');
+        $total_pengeluaran = Transaksi::where('jenis', 'Kredit')
+            ->sum('nominal');
+        $saldo_akhir = $total_pemasukan - $total_pengeluaran;
+        $jenis = Jenis::all();
+        return view(
+            'Laporan.index',
+            compact(
+                'transaksi',
+                'total_pemasukan',
+                'total_pengeluaran',
+                'saldo_akhir',
+                'jenis'
+            )
+        );
+    }
+
     public function all(): View
     {
         $transaksi = Transaksi::select("*")
@@ -79,7 +103,7 @@ class LaporanController extends Controller
         $total_pengeluaran = Transaksi::where('jenis', 'Pengeluaran')
                                       ->sum('nominal');
         $saldo_akhir = $total_pemasukan - $total_pengeluaran;
-        $mpdf->WriteHTML(view('Laporan.All.table',  compact(
+        $mpdf->WriteHTML(view('Laporan.table',  compact(
             'transaksi',
             'total_pemasukan',
             'total_pengeluaran',
@@ -99,7 +123,7 @@ class LaporanController extends Controller
         $total_pengeluaran = Transaksi::where('jenis', 'Pengeluaran')
                                       ->sum('nominal');
         $saldo_akhir = $total_pemasukan - $total_pengeluaran;
-        $mpdf->WriteHTML(view('Laporan.All.table',  compact(
+        $mpdf->WriteHTML(view('Laporan.table',  compact(
             'transaksi',
             'total_pemasukan',
             'total_pengeluaran',

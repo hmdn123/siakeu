@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\JenisController;
 use App\Http\Controllers\LaporanController;
 use App\Http\Controllers\PemasukanController;
 use App\Http\Controllers\PengeluaranController;
@@ -29,16 +30,24 @@ Route::get('/', function () {
 // Route yang dapat di akses dengan login
 Route::middleware(['auth'])->group(function () {
     Route::resource('/home', HomeController::class)->middleware('checkRole:Owner,Admin');
-    Route::resource('/transaksi', TransaksiController::class)->middleware('checkRole:Owner,Admin');
+    Route::controller(TransaksiController::class)->group(function () {
+        Route::get      ('/transaksi',              'index');
+        Route::post     ('/transaksi/store',        'store');
+        Route::get      ('/transaksi/edit/{id}',    'edit');
+        Route::put      ('/transaksi/update/{id}',  'update');
+        Route::delete   ('/transaksi/delete/{id}',  'destroy');
+    })->middleware('checkRole:Owner,Admin');
     Route::controller(LaporanController::class)->group(function () {
-        Route::get('/laporan/all', 'all');
-        Route::get('/laporan/pemasukan', 'pemasukan');
-        Route::get('/laporan/pengeluaran', 'pengeluaran');
+        Route::get('/laporan', 'index');
+        // Route::get('/laporan/all', 'all');
+        // Route::get('/laporan/pemasukan', 'pemasukan');
+        // Route::get('/laporan/pengeluaran', 'pengeluaran');
         Route::get('/laporan/download/excel', 'export_excel');
         Route::get('/laporan/view/pdf', 'view_pdf');
         Route::get('/laporan/download/pdf', 'export_pdf');
     })->middleware('checkRole:Owner,Admin');
     Route::resource('/setting', SettingController::class)->middleware('checkRole:Owner');
+    Route::resource('/jenis', JenisController::class)->middleware('checkRole:Owner');
 });
 
 Auth::routes([

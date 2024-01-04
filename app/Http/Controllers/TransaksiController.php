@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Jenis;
 use App\Models\Transaksi;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
@@ -14,48 +15,67 @@ class TransaksiController extends Controller
         $transaksi = Transaksi::select("*")
                                 ->orderBy('created_at')
                                 ->get();
-        $total_pemasukan = Transaksi::where('jenis', 'Pemasukan')
+        $total_pemasukan = Transaksi::where('jenis', 'Debit')
                                       ->sum('nominal');
-        $total_pengeluaran = Transaksi::where('jenis', 'Pengeluaran')
+        $total_pengeluaran = Transaksi::where('jenis', 'Kredit')
                                       ->sum('nominal');
         $saldo_akhir = $total_pemasukan - $total_pengeluaran;
+        $jenis = Jenis::all();
         return view('Transaksi.index', 
             compact(
                 'transaksi',
                 'total_pemasukan',
                 'total_pengeluaran',
-                'saldo_akhir')
-            );
+                'saldo_akhir',
+                'jenis',
+            )
+        );
     }
 
     public function store(Request $request): RedirectResponse
     {
         //validate form
         $this->validate($request, [
-            'jenis'         => 'required',
+            'kode'         => 'required',
             'keterangan'    => 'required',
-            'nominal'       => 'required',
+            'jenis'        => 'required',
+            'detail'       => 'required',
+            'nominal'      => 'required',
         ]);
 
         //create Transaksi
         Transaksi::create([
-            'jenis'         => $request->jenis,
-            'keterangan'    => $request->keterangan,
-            'nominal'       => $request->nominal,
-            'user_id' => auth()->user()->id,
+            'kode'         => $request->kode,
+            'keterangan'        => $request->keterangan,
+            'jenis'        => $request->jenis,
+            'detail'       => $request->detail,
+            'nominal'      => $request->nominal,
+            'user_id'      => auth()->user()->id,
         ]);
 
         //redirect to index
-        return redirect()->route('transaksi.index')->with(['success' => 'Data Berhasil Disimpan!']);
+        return redirect('transaksi')->with(['success' => 'Data Berhasil Disimpan!']);
+    }
+
+    public function edit($id)
+    {
+        $transaksi = Transaksi::find($id);
+        $jenis = Jenis::all();
+        return view('transaksi.edit', compact([
+            'transaksi',
+            'jenis'
+        ]));
     }
 
     public function update(Request $request, $id): RedirectResponse
     {
         //validate form
         $this->validate($request, [
-            'jenis'         => 'required',
+            'kode'         => 'required',
             'keterangan'    => 'required',
-            'nominal'       => 'required',
+            'jenis'        => 'required',
+            'detail'       => 'required',
+            'nominal'      => 'required',
         ]);
         
         //get transaksi by ID
@@ -63,13 +83,16 @@ class TransaksiController extends Controller
 
         //updated
         $transaksi->update([
-            'jenis'         => $request->jenis,
-            'keterangan'    => $request->keterangan,
-            'nominal'       => $request->nominal,
+            'kode'         => $request->kode,
+            'keterangan'   => $request->keterangan,
+            'jenis'        => $request->jenis,
+            'detail'       => $request->detail,
+            'nominal'      => $request->nominal,
+            'user_id'      => auth()->user()->id,
         ]);
 
         //redirect to index
-        return redirect()->route('transaksi.index')->with(['success' => 'Data Berhasil Diubah!']);
+        return redirect('transaksi')->with(['success' => 'Data Berhasil Diubah!']);
     }
     
     public function destroy($id): RedirectResponse
@@ -81,6 +104,6 @@ class TransaksiController extends Controller
         $transaksi->delete();
 
         //redirect to index
-        return redirect()->route('transaksi.index')->with(['success' => 'Data Berhasil Dihapus!']);
+        return back()->with(['success' => 'Data Transaksi Telah Dihapus']);
     }
 }

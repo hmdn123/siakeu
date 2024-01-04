@@ -13,7 +13,7 @@ class SettingController extends Controller
     public function index(): View
     {
         $account = User::all();
-        return view('Setting.index',compact('account'));
+        return view('Setting.Account.index',compact('account'));
     }
 
     public function update(Request $request, $id): RedirectResponse

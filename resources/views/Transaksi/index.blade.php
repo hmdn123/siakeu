@@ -12,77 +12,124 @@
   </nav>
 </div><!-- End Page Title -->
 
+@if (!$jenis->isEmpty())
 <section class="section">
   <div class="row">
-    <div class="col-lg-8">
+    <div class="col-lg-12">
       <div class="card">
         <div class="card-body">
-          <h5 class="card-title">Transaksi</h5>
-          <p>Input setiap pemasukan dan pengeluaran yang dilakukan.</p>
-          <form class="row g-3" action="{{ route('transaksi.store') }}" method="POST">
+          <h5 class="card-title">Transaksi
+            <br>
+            <span>Input setiap pemasukan dan pengeluaran yang dilakukan.</span>
+          </h5>
+          <form action="{{ url('transaksi/store') }}" method="POST">
             @csrf
-            <div class="col-md-3">
-              <label for="transaksi" class="form-label">Jenis Transaksi</label>
-              <select name="jenis" class="form-control @error('jenis') is-invalid @enderror">
-                <option selected disabled value="">Choose...</option>
-                <option value="Pemasukan">Pemasukan</option>
-                <option value="Pengeluaran">Pengeluaran</option>
-              </select>
-              <!-- error message untuk jenis -->
-              @error('jenis')
-              <div class="alert alert-danger mt-2">
-                {{ $message }}
+            <div class="row g-3 mb-3">
+              <div class="col-md-4">
+                <label for="keterangan" class="form-label">Jenis Transaksi</label>
+                <select name="keterangan" class="form-select @error('keterangan') is-invalid @enderror" id="jenis">
+                  <option selected disabled value="">Choose...</option>
+                  @foreach ( $jenis as $jenis )
+                  <option value="{{ $jenis->keterangan }}" data-kode="{{ $jenis->kode }}">{{ $jenis->keterangan }}</option>
+                  @endforeach
+                </select>
+                <!-- error message untuk jenis -->
+                @error('keterangan')
+                <div class="alert alert-danger mt-2">
+                  {{ $message }}
+                </div>
+                @enderror
               </div>
-              @enderror
-            </div>
-            <div class="col-md-5">
-              <label for="keterangan" class="form-label">Keterangan</label>
-              <input type="text" class="form-control @error('keterangan') is-invalid @enderror" name="keterangan" value="{{ old('keterangan') }}" id="keterangan">
-              <!-- error message untuk keterangan -->
-              @error('keterangan')
-              <div class="alert alert-danger mt-2">
-                {{ $message }}
+              <div class="col-md-4">
+                <label for="kode" class="form-label">Kode Transaksi</label>
+                <input type="text" class="form-control @error('kode') is-invalid @enderror" value="{{ old('kode') }}" id="kode" name="kode">
+                <!-- error message untuk keterangan -->
+                @error('kode')
+                <div class="alert alert-danger mt-2">
+                  {{ $message }}
+                </div>
+                @enderror
               </div>
-              @enderror
-            </div>
-            <div class="col-md-4">
-              <label for="nominal" class="form-label">Nominal</label>
-              <div class="input-group">
-                <span class="input-group-text" id="basic-addon1">Rp</span>
-                <input type="text" class="form-control @error('nominal') is-invalid @enderror" name="nominal" value="{{ old('nominal') }}" id="nominal">
-                <!-- error message untuk nominal -->
-                @error('nominal')
+              <div class="col-md-4">
+                <label for="jenis" class="form-label">Kategori Transaksi</label>
+                <select name="jenis" class="form-select @error('jenis') is-invalid @enderror">
+                  <option selected disabled value="">Choose...</option>
+                  <option value="Debit">Debit | Pemasukan</option>
+                  <option value="Kredit">Kredit | Pengeluaran</option>
+                </select>
+                <!-- error message untuk jenis -->
+                @error('jenis')
                 <div class="alert alert-danger mt-2">
                   {{ $message }}
                 </div>
                 @enderror
               </div>
             </div>
-            <div class="text-center">
-              <button type="submit" class="btn btn-primary">Submit</button>
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label for="detail" class="form-label">Uraian</label>
+                <input type="text" class="form-control @error('detail') is-invalid @enderror" name="detail" value="{{ old('detail') }}" id="detail">
+                <!-- error message untuk detail -->
+                @error('detail')
+                <div class="alert alert-danger mt-2">
+                  {{ $message }}
+                </div>
+                @enderror
+              </div>
+              <div class="col-md-4">
+                <label for="nominal" class="form-label">Nominal</label>
+                <div class="input-group">
+                  <span class="input-group-text" id="basic-addon1">Rp</span>
+                  <input type="text" class="form-control @error('nominal') is-invalid @enderror" name="nominal" value="{{ old('nominal') }}" id="nominal">
+                  <!-- error message untuk nominal -->
+                  @error('nominal')
+                  <div class="alert alert-danger mt-2">
+                    {{ $message }}
+                  </div>
+                  @enderror
+                </div>
+              </div>
+              <div class="col-md-2">
+                <div class="text-center">
+                  <br>
+                  <button type="submit" class="btn btn-primary">Submit</button>
+                </div>
+                </div>
             </div>
           </form><!-- End Multi Columns Form -->
         </div>
       </div>
     </div>
-
-    <div class="col-lg-4">
+  </div>
+  <div class="row">
+    <div class="col-lg-6">
       <div class="card">
         <div class="card-body">
           <h5 class="card-title">SALDO</h5>
           <h1>@currency($saldo_akhir)</h1>
-          <hr>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-6">
+      <div class="card">
+        <div class="card-body mt-3">
           <table class="table table-sm">
             <thead>
               <tr>
-                <th>Total Pemasukan</th>
-                <td>: @currency($total_pemasukan)</td>
+                <th>Total Pemasukan :</th>
+                <td></td>
+              </tr>
+              <tr>
+                <td style="text-align: right;" colspan="2"> @currency($total_pemasukan)</td>
               </tr>
             </thead>
             <tbody>
               <tr>
-                <th>Total Pengeluaran</th>
-                <td>: @currency($total_pengeluaran)</td>
+                <th>Total Pengeluaran :</th>
+                <td></td>
+              </tr>
+              <tr>
+                <td style="text-align: right;" colspan="2"> @currency($total_pengeluaran)</td>
               </tr>
             </tbody>
           </table>
@@ -102,7 +149,9 @@
               <tr>
                 <th scope="col">#</th>
                 <th scope="col">Tgl</th>
-                <th scope="col">Keterangan</th>
+                <th scope="col">Kode</th>
+                <th scope="col">Jenis</th>
+                <th scope="col">Uraian</th>
                 <th scope="col">Debit</th>
                 <th scope="col">Kredit</th>
                 <th scope="col">Account</th>
@@ -114,8 +163,10 @@
               <tr>
                 <th scope="row">{{$loop->iteration}}</th>
                 <td>{{ $transaksi->created_at }}</td>
+                <td>{{ $transaksi->kode }}</td>
                 <td>{{ $transaksi->keterangan }}</td>
-                @if ($transaksi->jenis === "Pemasukan")
+                <td>{{ $transaksi->detail }}</td>
+                @if ($transaksi->jenis === "Debit")
                 <td>@currency($transaksi->nominal)</td>
                 <td></td>
                 @else
@@ -124,73 +175,14 @@
                 @endif
                 <td>{{ $transaksi->user->name }}</td>
                 <td>
-                  <form onsubmit="return confirm('Apakah Anda Yakin ?');" action="{{ route('transaksi.destroy', $transaksi->id) }}" method="POST">
-                    <a class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#EditTransaksi_{{ $transaksi->id }}"><i class="bi bi-pencil-square"></i></a>
+                  <form onsubmit="return confirm('Apakah Anda Yakin ?');" action="{{ url('transaksi/delete', $transaksi->id) }}" method="POST">
+                    <a href="{{ url('transaksi/edit', $transaksi->id) }}" class="btn btn-sm btn-warning"><i class="bi bi-pencil-square"></i></a>
                     @csrf
                     @method('DELETE')
                     <button type="submit" class="btn btn-danger btn-sm"><i class="bi bi-trash"></i></button>
                   </form>
                 </td>
               </tr>
-              <!-- modal edit -->
-              <div class="modal fade" id="EditTransaksi_{{ $transaksi->id }}" tabindex="-1">
-                <div class="modal-dialog modal-sm">
-                  <div class="modal-content">
-                    <div class="modal-header">
-                      <h5 class="modal-title">Edit Data Transaksi</h5>
-                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                      <form action="{{ route('transaksi.update', $transaksi->id) }}" method="POST">
-                        @csrf
-                        @method('PUT')
-                        <div class="mb-3">
-                          <label for="jenis" class="form-label">Jenis Transaksi</label>
-                          <select name="jenis" class="form-control @error('jenis') is-invalid @enderror">
-                            <option selected disabled value="">Choose...</option>
-                            <option value="Pemasukan" @if($transaksi->jenis == "Pemasukan") selected @endif>Pemasukan</option>
-                            <option value="Pengeluaran" @if($transaksi->jenis == "Pengeluaran") selected @endif>Pengeluaran</option>
-                          </select>
-                          <!-- error message untuk jenis -->
-                          @error('jenis')
-                          <div class="alert alert-danger mt-2">
-                            {{ $message }}
-                          </div>
-                          @enderror
-                        </div>
-                        <div class="mb-3">
-                          <label for="keterangan" class="form-label">Keterangan</label>
-                          <input type="text" class="form-control @error('keterangan') is-invalid @enderror" name="keterangan" value="{{ $transaksi->keterangan }}" id="keterangan">
-                          <!-- error message untuk keterangan -->
-                          @error('keterangan')
-                          <div class="alert alert-danger mt-2">
-                            {{ $message }}
-                          </div>
-                          @enderror
-                        </div>
-                        <div class="mb-3">
-                          <label for="nominal" class="form-label">Nominal</label>
-                          <div class="input-group">
-                            <span class="input-group-text" id="basic-addon1">Rp</span>
-                            <input type="text" class="form-control @error('nominal') is-invalid @enderror" name="nominal" value="{{ $transaksi->nominal }}" id="nominal">
-                            <!-- error message untuk nominal -->
-                            @error('nominal')
-                            <div class="alert alert-danger mt-2">
-                              {{ $message }}
-                            </div>
-                            @enderror
-                          </div>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                      <button type="submit" class="btn btn-primary">Save</button>
-                    </div>
-                    </form>
-                  </div>
-                </div>
-              </div>
-              <!-- End Small Modal-->
               @empty
               <div class="alert alert-danger">
                 Data Transaksi belum Tersedia.
@@ -206,20 +198,44 @@
     </div>
   </div>
 </section>
+@else
+<section class="section">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card border-danger">
+        <div class="card-body">
+          <h5 class="card-title">PEMBERITAHUAN
+            <br>
+            <span>Silahkan Ke Menu SETTING -> JENIS TRANSAKSI. <br>
+              Untuk melakukan penyetingan terlebih dahulu.
+            </span>
+          </h5>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+@endif
 
 @endsection
 
 @section('js')
 <script>
-    //message with toastr
-    @if(session()->has('success'))
-    
-        toastr.success('{{ session('success') }}', 'BERHASIL!'); 
+  $(document).ready(function() {
+    $('#jenis').on('change', function() {
+      const selected = $(this).find('option:selected');
+      const kode = selected.data('kode');
 
-    @elseif(session()->has('error'))
-
-        toastr.error('{{ session('error') }}', 'GAGAL!'); 
-        
-    @endif
+      $("#kode").val(kode);
+    });
+  });
+</script>
+<script>
+  //message with toastr
+  @if(session()->has('success'))
+    toastr.success('{{ session('success ') }}', 'BERHASIL!');
+  @elseif(session()->has('error'))
+    toastr.error('{{ session('error ') }}', 'GAGAL!');
+  @endif
 </script>
 @endsection
