@@ -30,7 +30,7 @@
                 <select name="keterangan" class="form-select @error('keterangan') is-invalid @enderror" id="jenis">
                   <option selected disabled value="">Choose...</option>
                   @foreach ( $jenis as $jenis )
-                  <option value="{{ $jenis->keterangan }}" data-kode="{{ $jenis->kode }}">{{ $jenis->keterangan }}</option>
+                  <option value="{{ $jenis->keterangan }}" data-kode="{{ $jenis->kode }}" data-kode2="{{ $jenis->kode }}">{{ $jenis->keterangan }}</option>
                   @endforeach
                 </select>
                 <!-- error message untuk jenis -->
@@ -41,14 +41,15 @@
                 @enderror
               </div>
               <div class="col-md-4">
-                <label for="kode" class="form-label">Kode Transaksi</label>
-                <input type="text" class="form-control @error('kode') is-invalid @enderror" value="{{ old('kode') }}" id="kode" name="kode">
-                <!-- error message untuk keterangan -->
-                @error('kode')
-                <div class="alert alert-danger mt-2">
-                  {{ $message }}
+                <label for="kode2" class="form-label">Kode Transaksi</label>
+                <div class="row">
+                  <div class="col-md-6">
+                    <input type="text" class="form-control col-md-6 value=" {{ old('kode2') }}" id="kode2" disabled="">
+                  </div>
+                  <div class="col-md-6">
+                    <input type="text" class="form-control value=" {{ old('kode') }}" id="kode" name="kode" style="visibility: hidden;">
+                  </div>
                 </div>
-                @enderror
               </div>
               <div class="col-md-4">
                 <label for="jenis" class="form-label">Kategori Transaksi</label>
@@ -94,7 +95,7 @@
                   <br>
                   <button type="submit" class="btn btn-primary">Submit</button>
                 </div>
-                </div>
+              </div>
             </div>
           </form><!-- End Multi Columns Form -->
         </div>
@@ -175,12 +176,17 @@
                 @endif
                 <td>{{ $transaksi->user->name }}</td>
                 <td>
+                  @if ($transaksi->user->name === Auth::user()->name )
                   <form onsubmit="return confirm('Apakah Anda Yakin ?');" action="{{ url('transaksi/delete', $transaksi->id) }}" method="POST">
                     <a href="{{ url('transaksi/edit', $transaksi->id) }}" class="btn btn-sm btn-warning"><i class="bi bi-pencil-square"></i></a>
                     @csrf
                     @method('DELETE')
                     <button type="submit" class="btn btn-danger btn-sm"><i class="bi bi-trash"></i></button>
                   </form>
+                  @else
+                  <p style="text-align: center;"><b> No Akses </b></p>
+                  @endif
+
                 </td>
               </tr>
               @empty
@@ -225,8 +231,10 @@
     $('#jenis').on('change', function() {
       const selected = $(this).find('option:selected');
       const kode = selected.data('kode');
+      const kode2 = selected.data('kode2');
 
       $("#kode").val(kode);
+      $("#kode2").val(kode2);
     });
   });
 </script>

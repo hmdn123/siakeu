@@ -2,133 +2,51 @@
 
 namespace App\Http\Controllers;
 
-use App\Exports\ExportLaporan;
 use App\Models\Jenis;
 use App\Models\Transaksi;
+use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
-use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Facades\DB;
 
 class LaporanController extends Controller
 {
-    public function index(): View
+    public function index(Request $request): View
     {
-        $transaksi = Transaksi::select("*")
-            ->orderBy('created_at')
-            ->get();
         $total_pemasukan = Transaksi::where('jenis', 'Debit')
-            ->sum('nominal');
+                ->sum('nominal');
         $total_pengeluaran = Transaksi::where('jenis', 'Kredit')
-            ->sum('nominal');
+                ->sum('nominal');
         $saldo_akhir = $total_pemasukan - $total_pengeluaran;
         $jenis = Jenis::all();
-        return view(
-            'Laporan.index',
-            compact(
-                'transaksi',
-                'total_pemasukan',
-                'total_pengeluaran',
-                'saldo_akhir',
-                'jenis'
-            )
-        );
-    }
 
-    public function all(): View
-    {
-        $transaksi = Transaksi::select("*")
-            ->orderBy('created_at')
+        $data = Transaksi::orderBy('created_at')
+            ->when($request->date_from && $request->date_to,
+                function (Builder $builder) use ($request){
+                    $builder->whereBetween(
+                        DB::raw('DATE(created_at)'), [
+                            $request->date_from,
+                            $request->date_to
+                        ]);
+                })
+            ->when($request->kode != null,
+                function($q) use ($request) {
+                    return $q->where('kode', $request->kode);
+                })
+            ->when($request->jenis != null,
+                function($q) use ($request) {
+                    return $q->where('jenis', $request->jenis);
+                })
             ->get();
-        $total_pemasukan = Transaksi::where('jenis', 'Pemasukan')
-            ->sum('nominal');
-        $total_pengeluaran = Transaksi::where('jenis', 'Pengeluaran')
-            ->sum('nominal');
-        $saldo_akhir = $total_pemasukan - $total_pengeluaran;
-        return view(
-            'Laporan.All.index',
-            compact(
-                'transaksi',
-                'total_pemasukan',
-                'total_pengeluaran',
-                'saldo_akhir'
-            )
-        );
-    }
 
-    public function pemasukan(): View
-    {
-        $history_pemasukan = Transaksi::where('jenis', 'Pemasukan')
-            ->orderBy('created_at')
-            ->get();
-        $total_pemasukan = Transaksi::where('jenis', 'Pemasukan')
-            ->sum('nominal');
-        return view(
-            'Laporan.Pemasukan.index',
-            compact(
-                'history_pemasukan',
-                'total_pemasukan'
-            )
-        );
-    }
-
-    public function pengeluaran(): View
-    {
-        $history_pengeluaran = Transaksi::where('jenis', 'Pengeluaran')
-            ->orderBy('created_at')
-            ->get();
-        $total_pengeluaran = Transaksi::where('jenis', 'Pengeluaran')
-            ->sum('nominal');
-        return view(
-            'Laporan.Pengeluaran.index',
-            compact(
-                'history_pengeluaran',
-                'total_pengeluaran'
-            )
-        );
-    }
-
-    public function export_excel()
-    {
-        return Excel::download(new ExportLaporan, "laporan keuangan.xlsx");
-    }
-
-    public function view_pdf()
-    {
-        $mpdf = new \Mpdf\Mpdf();
-        $transaksi = Transaksi::select("*")
-                                ->orderBy('created_at')
-                                ->get();
-        $total_pemasukan = Transaksi::where('jenis', 'Pemasukan')
-                                      ->sum('nominal');
-        $total_pengeluaran = Transaksi::where('jenis', 'Pengeluaran')
-                                      ->sum('nominal');
-        $saldo_akhir = $total_pemasukan - $total_pengeluaran;
-        $mpdf->WriteHTML(view('Laporan.table',  compact(
-            'transaksi',
+        return view('Laporan.index',compact(
             'total_pemasukan',
             'total_pengeluaran',
-            'saldo_akhir'
-        )));
-        $mpdf->Output();
-    }
-
-    public function export_pdf()
-    {
-        $mpdf = new \Mpdf\Mpdf();
-        $transaksi = Transaksi::select("*")
-                                ->orderBy('created_at')
-                                ->get();
-        $total_pemasukan = Transaksi::where('jenis', 'Pemasukan')
-                                      ->sum('nominal');
-        $total_pengeluaran = Transaksi::where('jenis', 'Pengeluaran')
-                                      ->sum('nominal');
-        $saldo_akhir = $total_pemasukan - $total_pengeluaran;
-        $mpdf->WriteHTML(view('Laporan.table',  compact(
-            'transaksi',
-            'total_pemasukan',
-            'total_pengeluaran',
-            'saldo_akhir'
-        )));
-        $mpdf->Output('laporan keuangan.pdf', 'D');
+            'saldo_akhir',
+            'jenis',
+            'data',
+            'request'
+        ));
+        
     }
 }

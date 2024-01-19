@@ -28,17 +28,16 @@ class HomeController extends Controller
         $transaksi = Transaksi::select("*")
                                 ->orderBy('created_at')
                                 ->get();
-        $total_pemasukan = Transaksi::where('jenis', 'Pemasukan')
+        $total_pemasukan = Transaksi::where('jenis', 'Debit')
                                       ->sum('nominal');
-        $total_pengeluaran = Transaksi::where('jenis', 'Pengeluaran')
+        $total_pengeluaran = Transaksi::where('jenis', 'Kredit')
                                       ->sum('nominal');
         $saldo_akhir = $total_pemasukan - $total_pengeluaran;
-        return view('home', 
-            compact(
+        return view('home', compact(
                 'transaksi',
                 'total_pemasukan',
                 'total_pengeluaran',
-                'saldo_akhir')
-            );
+                'saldo_akhir'
+            ));
     }
 }

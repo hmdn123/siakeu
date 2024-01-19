@@ -17,44 +17,54 @@
     <div class="col-lg-12">
       <div class="card">
         <div class="card-body">
-          <h5 class="card-title">Filter Data</h5>
-          <div class="row">
-            <div class="col-md-6">
-              <label for="keterangan" class="form-label">Jenis Transaksi</label>
-              <select name="keterangan" class="form-select @error('keterangan') is-invalid @enderror" >
-                <option selected disabled value="">Choose...</option>
-                @foreach ( $jenis as $jenis )
-                <option value="{{ $jenis->keterangan }}" >{{ $jenis->keterangan }}</option>
-                @endforeach
-              </select>
+          <h5 class="card-title">Filter Data Transaksi</h5>
+          <form action="laporan" method="get">
+            <div class="row mb-3">
+              <div class="col-md-4">
+                <label for="kode" class="form-label">Jenis</label>
+                <select id="kode" name="kode" class="form-select">
+                  <option selected disabled value="">Choose...</option>
+                  @foreach ( $jenis as $jenis )
+                  <option value="{{ $jenis->kode }}" {{ Request::get('kode') == $jenis->kode ? 'selected':''}}>{{ $jenis->keterangan }}</option>
+                  @endforeach
+                </select>
+              </div>
+              <div class="col-md-4">
+                <label for="jenis" class="form-label">Kategori</label>
+                <select id="jenis" name="jenis" class="form-select">
+                  <option selected disabled value="">Choose...</option>
+                  <option value="Debit" {{ Request::get('jenis') == 'Debit' ? 'selected':''}}>Debit | Pemasukan</option>
+                  <option value="Kredit" {{ Request::get('jenis') == 'Kredit' ? 'selected':''}}>Kredit | Pengeluaran</option>
+                </select>
+              </div>
+              <div class="col-md-2">
+                <label for="" class="form-label">Mulai</label>
+                <input type="date" name="date_from" class="form-control" value="{{ $request->date_from }}">
+              </div>
+              <div class="col-md-2">
+                <label for="" class="form-label">Sampai</label>
+                <input type="date" name="date_to" class="form-control" value="{{ $request->date_to }}">
+              </div>
             </div>
-            <div class="col-md-6">
-              <label for="jenis" class="form-label">Kategori Transaksi</label>
-              <select name="jenis" class="form-select @error('jenis') is-invalid @enderror">
-                <option selected disabled value="">Choose...</option>
-                <option value="Debit">Debit | Pemasukan</option>
-                <option value="Kredit">Kredit | Pengeluaran</option>
-              </select>
+            <div class="text-center">
+              <a type="submit" class="btn btn-secondary" href="{{ url('laporan')}}">Reset</a>
+              <input type="submit" class="btn btn-primary" value="Search">
             </div>
-          </div>
-          <hr>
-          <h5 class="card-title">Download :
-            <div class=" float-end">
-              Pdf :
-              <a href="{{ url('/laporan/view/pdf' )}}" target="_blank" class="btn btn-warning btn-sm"><i class="bi bi-eye-fill"></i></a>
-              <a href="{{ url('/laporan/download/pdf' )}}" class="btn btn-warning btn-sm"><i class="bi bi-download"></i></a>
-              | Excel :
-              <a href="{{ url('/laporan/download/excel' )}}" class="btn btn-primary btn-sm"><i class="bi bi-download"></i></a>
-            </div>
-          </h5>
-          <br>
-          @include('Laporan.table',$transaksi)
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-body">
+          @include('Laporan.table',$data)
         </div>
       </div>
     </div>
   </div>
 </section>
-
 
 @endsection
 

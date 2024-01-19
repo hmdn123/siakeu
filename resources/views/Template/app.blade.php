@@ -26,22 +26,23 @@
   <link href="{{ asset('template/vendor/remixicon/remixicon.css') }}" rel="stylesheet">
   <link href="{{ asset('template/vendor/simple-datatables/style.css') }}" rel="stylesheet">
   <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+  @yield('css')
 
   <!-- Template Main CSS File -->
   <link href="{{ asset('template/css/style.css') }}" rel="stylesheet">
 </head>
 
-<body>
+<body class="toggle-sidebar">
 
   <!-- ======= Header ======= -->
   <header id="header" class="header fixed-top d-flex align-items-center">
 
     <div class="d-flex align-items-center justify-content-between">
+      <i class="bi bi-list toggle-sidebar-btn"></i>
       <a href="{{ url('home') }}" class="logo d-flex align-items-center">
         <img src="{{ asset('template/img/logo.png') }}" alt="">
         <span class="d-none d-lg-block">SIAKEU</span>
       </a>
-      <i class="bi bi-list toggle-sidebar-btn"></i>
     </div><!-- End Logo -->
 
     <nav class="header-nav ms-auto">
@@ -95,69 +96,53 @@
   </header><!-- End Header -->
 
   <!-- ======= Sidebar ======= -->
-  <aside id="sidebar" class="sidebar">
+  <aside id="sidebar" class="sidebar" >
 
     <ul class="sidebar-nav" id="sidebar-nav">
 
       <li class="nav-item">
-        <a class="nav-link collapsed" href="{{ url('home') }}">
+        <a class="nav-link {{ request()->is('home') ? 'active' : 'collapsed'}}" href="{{ url('home') }}">
           <i class="bi bi-grid"></i>
           <span>Home</span>
         </a>
       </li>
 
       <li class="nav-item">
-        <a class="nav-link collapsed" href="{{ url('transaksi') }}">
+        <a class="nav-link {{ request()->is('transaksi*') ? 'active' : 'collapsed'}}" href="{{ url('transaksi') }}">
           <i class="bi bi-cash-coin"></i>
           <span>Transaksi</span>
         </a>
       </li>
 
       <li class="nav-item">
-        <a class="nav-link collapsed" href="{{ url('laporan') }}">
+        <a class="nav-link {{ request()->is('laporan*') ? 'active' : 'collapsed'}}" href="{{ url('laporan') }}">
           <i class="bi bi-journal-text"></i>
           <span>Laporan</span>
         </a>
       </li>
 
-      <!-- <li class="nav-item">
-        <a class="nav-link collapsed" data-bs-target="#laporan-nav" data-bs-toggle="collapse" href="#">
-          <i class="bi bi-journal-text"></i><span>Laporan</span><i class="bi bi-chevron-down ms-auto"></i>
+      <li class="nav-item">
+        <a class="nav-link {{ request()->is('neraca*') ? 'active' : 'collapsed'}}" href="{{ url('neraca') }}">
+          <i class="bi bi-bar-chart"></i>
+          <span>Neraca Saldo</span>
         </a>
-        <ul id="laporan-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
-          <li>
-            <a href="{{ url('laporan/all') }}">
-              <i class="bi bi-circle"></i><span>All</span>
-            </a>
-          </li>
-          <li>
-            <a href="{{ url('laporan/pemasukan') }}">
-              <i class="bi bi-circle"></i><span>Pemasukan</span>
-            </a>
-          </li>
-          <li>
-            <a href="{{ url('laporan/pengeluaran') }}">
-              <i class="bi bi-circle"></i><span>Pengeluaran</span>
-            </a>
-          </li>
-        </ul>
-      </li>End Laporan Nav -->
+      </li>
 
       @if ( Auth::user()->role != "Owner" )
       @else
       <li class="nav-item">
-        <a class="nav-link">
+        <a class="nav-link collapsed">
           <i class="bi bi-gear"></i>
           <span>Setting</span>
         </a>
         <ul class="nav-content">
           <li>
-            <a href="{{ url('setting') }}">
+            <a class="nav-link {{ request()->is('setting*') ? 'active' : 'collapsed'}}" href="{{ url('setting') }}">
               <i class="bi bi-circle"></i><span>Account</span>
             </a>
           </li>
           <li>
-            <a href="{{ url('jenis') }}">
+            <a class="nav-link {{ request()->is('jenis*') ? 'active' : 'collapsed'}}" href="{{ url('jenis') }}">
               <i class="bi bi-circle"></i><span>Jenis Transaksi</span>
             </a>
           </li>

@@ -22,7 +22,7 @@ class ExportLaporan implements FromView
                                       ->sum('nominal');
         $saldo_akhir = $total_pemasukan - $total_pengeluaran;
 
-        return view('Laporan.All.table',  compact(
+        return view('Laporan.table',  compact(
                 'transaksi',
                 'total_pemasukan',
                 'total_pengeluaran',

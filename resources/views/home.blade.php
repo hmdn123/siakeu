@@ -1,12 +1,14 @@
 @extends('Template.app')
 
 @section('content')
-
+@php
+use App\Models\Transaksi;
+@endphp
 <div class="pagetitle">
   <h1>Home</h1>
 </div><!-- End Page Title -->
 
-<section class="section">
+<section class="section dashboard">
   <div class="row">
     <div class="col-lg-4 dashboard">
       <!-- Revenue Card -->
