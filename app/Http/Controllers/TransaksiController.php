@@ -61,7 +61,7 @@ class TransaksiController extends Controller
     {
         $transaksi = Transaksi::find($id);
         $jenis = Jenis::all();
-        return view('transaksi.edit', compact([
+        return view('Transaksi.edit', compact([
             'transaksi',
             'jenis'
         ]));
