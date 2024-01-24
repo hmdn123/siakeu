@@ -2,12 +2,12 @@
 
 @section('content')
     <div class="pagetitle">
-        <h1>Transaksi</h1>
+        <h1>User</h1>
         <nav>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{{ url('home') }}">Home</a></li>
                 <li class="breadcrumb-item active">Setting</li>
-                <li class="breadcrumb-item active">Account</li>
+                <li class="breadcrumb-item active">User</li>
             </ol>
         </nav>
     </div><!-- End Page Title -->
