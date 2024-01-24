@@ -33,8 +33,8 @@
                 <label for="jenis" class="form-label">Kategori</label>
                 <select id="jenis" name="jenis" class="form-select">
                   <option selected disabled value="">Choose...</option>
-                  <option value="Debit" {{ Request::get('jenis') == 'Debit' ? 'selected':''}}>Debit | Pemasukan</option>
-                  <option value="Kredit" {{ Request::get('jenis') == 'Kredit' ? 'selected':''}}>Kredit | Pengeluaran</option>
+                  <option value="Debit" {{ Request::get('jenis') == 'Debit' ? 'selected':''}}>Debit</option>
+                  <option value="Kredit" {{ Request::get('jenis') == 'Kredit' ? 'selected':''}}>Kredit</option>
                 </select>
               </div>
               <div class="col-md-2">
