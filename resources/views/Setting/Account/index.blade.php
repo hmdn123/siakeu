@@ -73,7 +73,7 @@
             <div class="col">
                 <div class="card">
                     <div class="card-body">
-                        <h5 class="card-title">Setting Data Account</h5>
+                        <h5 class="card-title">Setting Data User</h5>
                         <!-- Table with stripped rows -->
                         <table class="table datatable">
                             <thead>
