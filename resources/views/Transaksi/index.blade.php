@@ -2,11 +2,11 @@
 
 @section('content')
     <div class="pagetitle">
-        <h1>Transaksi</h1>
+        <h1>Input Transaksi</h1>
         <nav>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{{ url('home') }}">Home</a></li>
-                <li class="breadcrumb-item active">Transaksi</li>
+                <li class="breadcrumb-item active">Input Transaksi</li>
             </ol>
         </nav>
     </div><!-- End Page Title -->
@@ -19,13 +19,13 @@
                         <div class="card-body">
                             <h5 class="card-title">Transaksi
                                 <br>
-                                <span>Input setiap pemasukan dan pengeluaran yang dilakukan.</span>
+                                <span>Input setiap pemasukan dan pengeluaran dengan benar</span>
                             </h5>
                             <form action="{{ url('transaksi/store') }}" method="POST">
                                 @csrf
                                 <div class="row g-3 mb-3">
                                     <div class="col-md-4">
-                                        <label for="keterangan" class="form-label">Jenis Transaksi</label>
+                                        <label for="keterangan" class="form-label">Nama Akun</label>
                                         <select name="keterangan"
                                             class="form-select @error('keterangan') is-invalid @enderror" id="jenis">
                                             <option selected disabled value="">Choose...</option>
@@ -42,7 +42,7 @@
                                         @enderror
                                     </div>
                                     <div class="col-md-4">
-                                        <label for="kode2" class="form-label">Kode Transaksi</label>
+                                        <label for="kode2" class="form-label">Kode Akun</label>
                                         <div class="row">
                                             <div class="col-md-6">
                                                 <input type="text" class="form-control col-md-6 value="
@@ -58,8 +58,8 @@
                                         <label for="jenis" class="form-label">Kategori Transaksi</label>
                                         <select name="jenis" class="form-select @error('jenis') is-invalid @enderror">
                                             <option selected disabled value="">Choose...</option>
-                                            <option value="Debit">Debit | Pemasukan</option>
-                                            <option value="Kredit">Kredit | Pengeluaran</option>
+                                            <option value="Debit">Debit</option>
+                                            <option value="Kredit">Kredit</option>
                                         </select>
                                         <!-- error message untuk jenis -->
                                         @error('jenis')
@@ -167,12 +167,12 @@
                                     <tr>
                                         <th scope="col">#</th>
                                         <th scope="col">Tgl</th>
-                                        <th scope="col">Kode</th>
-                                        <th scope="col">Jenis</th>
+                                        <th scope="col">Kode Akun</th>
+                                        <th scope="col">Nama Akun</th>
                                         <th scope="col">Uraian</th>
                                         <th scope="col">Debit</th>
                                         <th scope="col">Kredit</th>
-                                        <th scope="col">Account</th>
+                                        <th scope="col">User</th>
                                         <th scope="col"></th>
                                     </tr>
                                 </thead>

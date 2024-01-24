@@ -20,8 +20,8 @@
                         <table id="example" class="display" style="width:100%">
                             <thead>
                                 <tr>
-                                    <th scope="col">KODE</th>
-                                    <th scope="col">JENIS TRANSAKSI</th>
+                                    <th scope="col">KODE AKUN</th>
+                                    <th scope="col">NAMA AKUN</th>
                                     <th scope="col">DEBIT</th>
                                     <th scope="col">KREDIT</th>
                                 </tr>

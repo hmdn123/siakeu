@@ -110,14 +110,14 @@
       <li class="nav-item">
         <a class="nav-link {{ request()->is('transaksi*') ? 'active' : 'collapsed'}}" href="{{ url('transaksi') }}">
           <i class="bi bi-cash-coin"></i>
-          <span>Transaksi</span>
+          <span>Input Transaksi</span>
         </a>
       </li>
 
       <li class="nav-item">
         <a class="nav-link {{ request()->is('laporan*') ? 'active' : 'collapsed'}}" href="{{ url('laporan') }}">
           <i class="bi bi-journal-text"></i>
-          <span>Laporan</span>
+          <span>Buku Besar</span>
         </a>
       </li>
 
@@ -138,12 +138,12 @@
         <ul class="nav-content">
           <li>
             <a class="nav-link {{ request()->is('setting*') ? 'active' : 'collapsed'}}" href="{{ url('setting') }}">
-              <i class="bi bi-circle"></i><span>Account</span>
+              <i class="bi bi-circle"></i><span>User</span>
             </a>
           </li>
           <li>
             <a class="nav-link {{ request()->is('jenis*') ? 'active' : 'collapsed'}}" href="{{ url('jenis') }}">
-              <i class="bi bi-circle"></i><span>Jenis Transaksi</span>
+              <i class="bi bi-circle"></i><span>Nama Akun</span>
             </a>
           </li>
         </ul>

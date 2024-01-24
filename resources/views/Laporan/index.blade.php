@@ -3,11 +3,11 @@
 @section('content')
 
 <div class="pagetitle">
-  <h1>Laporan</h1>
+  <h1>Buku Besar</h1>
   <nav>
     <ol class="breadcrumb">
       <li class="breadcrumb-item"><a href="{{ url('home') }}">Home</a></li>
-      <li class="breadcrumb-item active">Laporan</li>
+      <li class="breadcrumb-item active">Buku Besar</li>
     </ol>
   </nav>
 </div><!-- End Page Title -->
@@ -21,7 +21,7 @@
           <form action="laporan" method="get">
             <div class="row mb-3">
               <div class="col-md-4">
-                <label for="kode" class="form-label">Jenis</label>
+                <label for="kode" class="form-label">Nama Akun</label>
                 <select id="kode" name="kode" class="form-select">
                   <option selected disabled value="">Choose...</option>
                   @foreach ( $jenis as $jenis )
@@ -47,8 +47,8 @@
               </div>
             </div>
             <div class="text-center">
-              <a type="submit" class="btn btn-secondary" href="{{ url('laporan')}}">Reset</a>
               <input type="submit" class="btn btn-primary" value="Search">
+              <a type="submit" class="btn btn-secondary" href="{{ url('laporan')}}">Reset</a>    
             </div>
           </form>
         </div>

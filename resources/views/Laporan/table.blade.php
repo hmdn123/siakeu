@@ -10,12 +10,12 @@
     <table id="example" class="display" style="width:100%">
         <thead>
             <tr>
-                <th>No.</th>
+                <th>NO</th>
                 <th>TANGGAL</th>
-                <th>KODE</th>
-                <th>JENIS</th>
+                <th>KODE AKUN</th>
+                <th>NAMA AKUN</th>
                 <th>URAIAN</th>
-                <th>ACCOUNT</th>
+                <th>USER</th>
                 <th>DEBIT</th>
                 <th>KREDIT</th>
             </tr>
