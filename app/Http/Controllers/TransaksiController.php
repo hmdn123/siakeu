@@ -13,15 +13,16 @@ class TransaksiController extends Controller
     public function index(): View
     {
         $transaksi = Transaksi::select("*")
-                                ->orderBy('created_at')
-                                ->get();
+            ->orderBy('tgl_input')
+            ->get();
         $total_pemasukan = Transaksi::where('jenis', 'Debit')
-                                      ->sum('nominal');
+            ->sum('nominal');
         $total_pengeluaran = Transaksi::where('jenis', 'Kredit')
-                                      ->sum('nominal');
+            ->sum('nominal');
         $saldo_akhir = $total_pemasukan - $total_pengeluaran;
         $jenis = Jenis::all();
-        return view('Transaksi.index', 
+        return view(
+            'Transaksi.index',
             compact(
                 'transaksi',
                 'total_pemasukan',
@@ -37,18 +38,20 @@ class TransaksiController extends Controller
         //validate form
         $this->validate($request, [
             'kode'         => 'required',
-            'keterangan'    => 'required',
+            'keterangan'   => 'required',
             'jenis'        => 'required',
             'detail'       => 'required',
+            'tgl_input'    => 'required',
             'nominal'      => 'required',
         ]);
 
         //create Transaksi
         Transaksi::create([
             'kode'         => $request->kode,
-            'keterangan'        => $request->keterangan,
+            'keterangan'   => $request->keterangan,
             'jenis'        => $request->jenis,
             'detail'       => $request->detail,
+            'tgl_input'    => $request->tgl_input,  // Ensure 'tgl_input' is included
             'nominal'      => $request->nominal,
             'user_id'      => auth()->user()->id,
         ]);
@@ -74,10 +77,11 @@ class TransaksiController extends Controller
             'kode'         => 'required',
             'keterangan'    => 'required',
             'jenis'        => 'required',
+            'tgl_input'        => 'required',
             'detail'       => 'required',
             'nominal'      => 'required',
         ]);
-        
+
         //get transaksi by ID
         $transaksi = Transaksi::findOrFail($id);
 
@@ -86,6 +90,7 @@ class TransaksiController extends Controller
             'kode'         => $request->kode,
             'keterangan'   => $request->keterangan,
             'jenis'        => $request->jenis,
+            'tgl_input'    => $request->tgl_input,
             'detail'       => $request->detail,
             'nominal'      => $request->nominal,
             'user_id'      => auth()->user()->id,
@@ -94,7 +99,7 @@ class TransaksiController extends Controller
         //redirect to index
         return redirect('transaksi')->with(['success' => 'Data Berhasil Diubah!']);
     }
-    
+
     public function destroy($id): RedirectResponse
     {
         //get transaksi by ID

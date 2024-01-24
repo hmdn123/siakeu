@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('keterangan');
             $table->enum('jenis', ['Debit', 'Kredit']);
             $table->string('detail');
+            $table->string('tgl_input');
             $table->integer('nominal');
             $table->integer('user_id');
             $table->timestamps();

@@ -17,6 +17,7 @@ class Transaksi extends Model
         'jenis',
         'detail',
         'nominal',
+        'tgl_input',
         'user_id',
     ];
 
@@ -24,5 +25,4 @@ class Transaksi extends Model
     {
         return $this->belongsTo(User::class);
     }
-
 }
