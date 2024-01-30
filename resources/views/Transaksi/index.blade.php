@@ -86,7 +86,7 @@
                                         <input type="date" class="form-control @error('tgl_input') is-invalid @enderror"
                                             name="tgl_input" value="{{ old('tgl_input') }}" id="tgl_input">
                                         <!-- error message untuk detail -->
-                                        @error('detail')
+                                        @error('tgl_input')
                                             <div class="alert alert-danger mt-2">
                                                 {{ $message }}
                                             </div>

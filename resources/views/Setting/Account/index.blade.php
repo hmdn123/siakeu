@@ -97,9 +97,10 @@
                                                     data-bs-target="#EditAccount_{{ $data->id }}"><i
                                                         class="bi bi-pencil-square"></i> Edit</a>
                                                 @csrf
-                                                {{-- @method('DELETE')
-                    <button type="submit" class="btn btn-danger btn-sm"><i class="bi bi-trash"></i> Hapus</button>
-                  </form> --}}
+                                                @method('DELETE')
+                                                {{-- <button type="submit" class="btn btn-danger btn-sm"><i
+                                                        class="bi bi-trash"></i> Hapus</button> --}}
+                                            </form>
                                         </td>
                                     </tr>
 

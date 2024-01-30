@@ -12,7 +12,7 @@ class JenisController extends Controller
     public function index(): View
     {
         $jenis = Jenis::all();
-        return view('Setting.Jenis.index',compact('jenis'));
+        return view('Setting.Jenis.index', compact('jenis'));
     }
 
     public function store(Request $request): RedirectResponse
@@ -31,5 +31,11 @@ class JenisController extends Controller
 
         //redirect to index
         return redirect()->route('jenis.index')->with(['success' => 'Data Berhasil Dibuat!']);
+    }
+
+    public function update(Request $request, $id)
+    {
+        Jenis::find($id)->update(['keterangan' => $request->keterangan]);
+        return redirect()->route('jenis.index')->with(['success' => 'Data Berhasil Diedit!']);
     }
 }
