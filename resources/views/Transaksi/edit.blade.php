@@ -56,10 +56,10 @@
                                 <div class="col-sm-4">
                                     <select name="jenis" class="form-select @error('jenis') is-invalid @enderror">
                                         <option selected disabled value="">Choose...</option>
-                                        <option value="Debit" @if ($transaksi->jenis == 'Debit') selected @endif>Debit |
-                                            Pemasukan</option>
-                                        <option value="Kredit" @if ($transaksi->jenis == 'Kredit') selected @endif>Kredit |
-                                            Pengeluaran</option>
+                                        <option value="Debit" @if ($transaksi->jenis == 'Debit') selected @endif>Debit
+                                        </option>
+                                        <option value="Kredit" @if ($transaksi->jenis == 'Kredit') selected @endif>Kredit
+                                        </option>
                                     </select>
                                     <!-- error message untuk jenis -->
                                     @error('jenis')
